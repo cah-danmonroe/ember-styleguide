@@ -1,1 +1,44 @@
+<input
+  id='search-input'
+  type='search'
+  value={{value}}
+  oninput={{perform search value='target.value'}}
+  onfocus={{action 'onfocus'}}
+  onblur={{action 'onblur'}}
+  placeholder="Search"
+>
+{{#ember-tether
+  target='#search-input'
+  targetAttachment='bottom left'
+  attachment='top left'
+  constraints=_resultTetherConstraints
+  class='ds-dropdown-results'
+}}
+  {{log showDropdown}}
+  {{#if showDropdown}}
+    <span class="ds-suggestions ds-dropdown-menu">
+      <div class="ds-suggestion">
+        {{#search-result-header}}
+          Search Results
+        {{/search-result-header}}
+      </div>
+
+{{log searchService.results}}
+      {{#each searchService.results as |result|}}
+        {{search-result result=result}}
+      {{else}}
+        <div class="algolia-docsearch-suggestion">
+          <div class="algolia-docsearch-suggestion--noresults">
+            <p>No results found. Try searching the <a href="{{deprecationsGuideURL}}" target="_deprecations">deprecations guide</a>.</p>
+          </div>
+        </div>
+      {{/each}}
+      <div class="powered-by-algolia">
+        <a href="https://www.algolia.com/" target="_blank">
+          <img src="/images/logos/search-by-algolia.svg" alt="Search Powered by Algolia">
+        </a>
+      </div>
+    </span>
+  {{/if}}
+{{/ember-tether}}
 {{yield}}
